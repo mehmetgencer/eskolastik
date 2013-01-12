@@ -1,0 +1,142 @@
+<html>
+	<head>
+	<meta charset="utf-8">
+	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />   
+    <script src="/static/scripts/dust-core-0.3.0.min.js"></script>
+    <script src="/static/scripts/dust-full-0.3.0.min.js"></script>
+	 <script src='/static/scripts/escore.js'></script>
+	 <script src='/static/scripts/translations.js'></script>
+    <script type="text/javascript" src="/static/scripts/citeproc/loadlocale.js"></script>
+	 <script type="text/javascript" src="/static/scripts/citeproc/loadcsl.js"></script>
+    <script type="text/javascript" src="/static/scripts/citeproc/xmldom.js"></script>
+    <script type="text/javascript" src="/static/scripts/citeproc/citeproc.js"></script>
+	 <script src='/static/scripts/esclient.js'></script>
+    <link rel="stylesheet" href="/static/stylesheets/escore.less" />   
+    <!--[if IE]>
+    <script type="text/javascript" src="/static/scripts/json2.js"></script>
+    <![endif]-->
+	 <script type="text/javascript">
+	 var userTranslations={{translations|safe}};
+	 {% if designTranslations %}
+	 var designTranslations={{designTranslations|safe}};
+	 {%endif%}
+	 </script>
+	 <script type="text/javascript">
+ 	     escache["/apipublic/getProfile?profile={{pid}}"+JSON.stringify({})]={{profileJson|safe}};
+       $(function() {
+         autoLoadTemplates();
+         callAPIAndRenderToElement("/apipublic/getProfile?profile={{pid}}",{},"default","pageDiv",function(result){
+            //adjustElements(result);   
+            //makeClientData(result);      
+         },true);
+        });
+   </script>
+   <style>
+   .csl-entry {display:inline-block;}
+   {% if hasDesign %}
+     {{style|safe}}
+   {% else %}
+     body {font-family: Arial;}
+     div#header { padding:0px; width:70%; margin-left:230px; background-color: black; color: white;}     
+     #content {width:70%;margin-left:230px}
+     .profilePicture {max-width:180px;margin:10px;}
+     #left-menu {position:fixed;left:0px;top:0px;max-width:230px;}
+     .profileDescription {display:inline-block;margin:10px;}
+     .describedFile{display:block;}
+     .navmenu {list-style-type: none; padding-left: 5px;}
+     .navmenu li {padding:3px 0; margin: 3px 0;border-radius: 8px;background-color: lightgray;}
+     .navmenu a{text-decoration:none;padding:2px;font-weight: bold; color:black; margin-left:5px;display:inline-block;}
+     .navmenu a:hover{color:red; }
+     /*.publist li:nth-child(odd) { background-color: #EAEAEA;}
+     .publist li:nth-child(even) { background-color: #F8F8F8;}*/
+     .publist li {padding-bottom: 8px;}
+     .publist li:hover {background-color: #EEE;}
+   {% endif %}
+   </style>
+	</head>
+  <body>
+  <div id='templates' class='templateContainer'>
+   {% if hasDesign %}
+     {{template|safe}}
+   {% else %}
+    <div class="estemplate" tid="default">
+      <div id="header">
+         <h1 style='text-align:center;padding:10px;'>{title}</h1>
+     </div>
+
+     <div id='left-menu'>
+	   	{?profilePicture}
+	   	<img class='profilePicture' src='{profilePicture.fileUrl}'/> 
+	   	{/profilePicture}
+	   	<ul class='navmenu'>
+	   	{#sections}
+	   	<li><a href='#{.sectionKey}'>{#i18n msg=.title/}</a></li>
+	   	{/sections}
+	   	</ul>
+     </div>
+
+     <div id='content'>
+   	<div>
+	   	<p class='profileDescription'>{profiledesc|s}</p>
+   	</div>
+   	{#sections}
+   	 <a name='{.sectionKey}'/><h2>{#i18n msg=.title/}</h2>
+   	 <p>{secdesc|s}</p>
+   	 <ul class='publist'>
+   	 {#publications}
+   	  <li>
+   	     {?.issep}
+   	        </ul>
+   	        <h3>{.title}</h3>
+   	        <div>{.desc|s}</div>
+   	        <ul class='publist'>
+   	     {:else}
+      	  	  {?.ispub}
+         	     ({#i18n msg=.pubtype/})
+         	     {#citeproc/}
+      	     {:else}
+         	     <em>{.title}</em>:
+         	     {.desc|s}
+      	     {/.ispub}
+      	     {?pfiles}
+      	       <div>{#i18n msg="Dosyalar"/}:
+      	       {#pfiles}
+      	        {?.description}
+      	        <div>
+      	           <a href='{fileUrl}'>{fileName}</a> {.description|s}
+      	        </div>
+      	        {:else}
+      	        <a href='{fileUrl}'>{fileName}</a>&nbsp;&nbsp;
+      	        {/.description}
+      	       {/pfiles}
+      	       </div>
+      	     {/pfiles}
+   	     {/.issep} 
+   	  </li>
+   	 {/publications}
+   	 </ul>
+   	{/sections}
+   	</div>
+     </div>
+   {% endif %}
+
+  </div>
+  <!-- -------------------------------------------------------------------------- -->
+  <div id='pageDiv'>
+  </div>
+  <div style='display:none'>
+  {% for f in allFiles %}
+  <a href='{{f.asJson.fileUrl}}'></a>
+  {% endfor %}
+  </div>
+  <a class='linkpersistent' href='http://e-skolastik.appspot.com'>powered by <img class='logopersistent' src="/static/icons/logo.svg"/></a>
+  <div id="loading-div-background">
+    <div id="loading-div" class="ui-corner-all" >
+      <img style="height:80px;margin:30px;" src="/static/icons/loading.gif" alt="Loading.."/>
+      <h2 style="color:gray;font-weight:normal;">Lütfen bekleyin....</h2>
+     </div>
+</div>
+ </body>
+</html>

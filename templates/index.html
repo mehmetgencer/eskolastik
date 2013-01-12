@@ -1,0 +1,72 @@
+<html>
+	<head>
+	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />   
+	 <script src='/static/scripts/escore.js'></script>
+    <link rel="stylesheet" href="/static/stylesheets/escore.less" />   
+	 <script type="text/javascript">
+       $(function() {
+         getProfile();
+        });
+   </script>
+   <style>
+    body {font-family: Arial;}
+    #content {width:70%; margin: 0px auto;}
+    #leftbar {position:fixed; left=0px;top=0px;max-width:180px;}
+    #menu {list-style-type: none;padding-left:2px;}
+    #menu li { background-color: #EEE;border-radius: 8px;padding-left:2px;margin-left:2px;margin:10px;}
+    #menu li a{text-decoration: none;font-weight: bold; color: black;}
+    #menu li:hover{background-color: #DDD;}
+   </style>
+	</head>
+  <body>
+    <div id='leftbar'>
+       <img class='logo' src="/static/icons/logo.svg"/> 
+       <ul id='menu'>
+         <li><a href='/'>Anasayfa</a></li>
+         <li><a href='/static/help/help.html'>Yardım</a></li>
+         <li><a href='/admin'>Yönetim konsolu</a></li>
+         <li><a href='/' onclick="toggleElement('users');return false;">Kullanıcılar</a></li>
+       </ul>
+    </div>
+    <h1 style='display:inline-block;margin:0px auto;text-align:center;width:80%;margin:20px;'>e-Skolastik: <span style='font-size:70%;'>Akademisyenler için kişisel web sayfası</span></h1>
+    <div id='content'>
+    <p>Bu online servis başta akademisyenler olmak üzere yayınlarını 
+    İnternet üzerinden paylaşmak isteyenler için ücretsiz olarak sunulmaktadır.
+    Geçmişte herhangi bir Google servisine kaydolduysanız (Gmail hesabınız olması gerekmez) hemen
+    <a href='/admin'>yönetim sayfası</a>na gidip bir profil sayfası oluşturabilirsiniz. Bu servis eserlerinizi kolayca tasnif edip bir web sayfası oluşturmanızı sağlar. Sayfanıza
+    http://e-skolastik.appspot.com/SAYFA-KODUM linkinden ulaşılabilir. SAYFA-KODU'nu istediğiniz gibi seçip sonradan
+    da değiştirebilirsiniz.
+    </p>
+    <p>
+    Profilinizde akademik yayınların yanısıra ders notları vs. sunabilir, ve hepsi için ek dosyalar koyabilirsiniz. 
+    Web deneyimi olan kullanıcılar kendi sayfa tasarımlarını oluşturabilirler. Diğer kullanıcılar ise
+    başkalarınca hazırlanmış tasarımlardan beğendiklerini kullanabilirler. Tasarım ve profil içeriği bağımsızdır, 
+    bu yüzden tanımladığınız yayın bilgileri sıfırlanmadan istediğiniz kadar tasarım değiştirebilirsiniz.     
+    </p>
+    <p>
+    Sistem, kullanım senaryolarınızı sınırlamamak için, sunucudan bağımsız, tek başına çalışabilir sayfalar üretir. 
+    Bu sayede dilerseniz e-Skolastik yardımıyla oluşturduğunuz sayfaları alıp kişisel veya kurumsal
+    profil sayfanız olarak kullanabilirsiniz.
+    </p>
+    <p>
+    e-Skolastik projesinin esas amaçlarından biri bilimsel yayınları (özellikle de Türkçe'de yayınlanmış olanları) 
+    tek bir noktadan erişilebilir kılmak,
+    ve bu verinin yenilikçi yöntemlerle sunmak isteyen başka online servisler için de açık olmasını
+    sağlamaktır. Bu yüzden açık bir API sunmaktadır.
+    Ayrıca bu doğrultuda OAI (Open Access Initiative) tarafından tasarlanmış bazı API'lar gibi
+    standartlara uygun servisleri de gelecekte sunmayı umuyoruz.
+    Bulduğunuz hataları bize bildirmek veya katkı yapmak için: mehmetgencer AT yahoo.com adresine yazabilirsiniz.  
+    </p>
+    <div id='users' class='hidden'> 
+    <h2>Varolan kullanıcılar</h2>
+    <ul>
+    {%for p in pcodes%}
+    <li><a href='/{{p}}'>{{p}}</a></li>
+    {%endfor%}
+    </ul>
+    </div>
+   </div>
+  </body>
+</html>

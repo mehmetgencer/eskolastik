@@ -1,0 +1,237 @@
+<html>
+	<head>
+	<meta charset="utf-8">
+	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />   
+    <script src="/static/scripts/dust-core-0.3.0.min.js"></script>
+    <script src="/static/scripts/dust-full-0.3.0.min.js"></script>
+	 <script src='/static/scripts/escore.js'></script>
+	 <script src='/static/scripts/esadmin.js'></script>
+	 <script src='/static/scripts/translations.js'></script>
+    <link rel="stylesheet" href="/static/stylesheets/escore.less" />   
+    <link rel="stylesheet" href="/static/stylesheets/esadmin.less" />   
+    <script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
+    <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
+                                   data-aloha-plugins="common/ui,
+                                                        common/format,
+                                                        common/list,
+                                                        common/link,
+                                                        common/highlighteditables">
+              </script>
+    <link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
+    
+	 <script type="text/javascript">
+	     var username="{{user.nickname}}";
+       $(function() {
+         autoLoadTemplates();
+         callAPIAndRenderToElement("/api/getProfile",{},"admin","profile",function(result,elementid){
+            adjustElements(result,elementid); 
+            Aloha.ready( function() {
+                            var $ = Aloha.jQuery;
+                            $('.es-editable-aloha').aloha();
+                     });  
+         });
+        });
+   </script>
+   <style>
+   {{esbibtex.makeStyles|safe}}
+   </style>
+	</head>
+  <body>
+  <div id='admin_templates' class='templateContainer'>
+  	  <div class="estemplate" tid="designChoices">
+  	    <ul>
+  	      <li>{#i18n msg="Öntanımlı"/} <button onclick="chooseDesign('')">Choose</button></li>
+		  	{#designAlternatives}
+		  	<li><!-- <span class="es-actionicon  ui-icon ui-arrowthick-1-e" title="choose design" onclick="chooseDesign('{.designKey}');"></span> -->
+		  	<strong>{.name}(by {.owner})</strong>:{desc}
+		  	<button onclick="preview('{.designKey}')">Preview</button><button onclick="chooseDesign('{.designKey}')">Choose</button>
+		  	</li>
+			{/designAlternatives}
+		 </ul> 
+  	  </div>
+     <div class="estemplate" tid="admin">
+        <div id='syspanel'>{#i18n msg="Kullanıcı"/}: {{user.nickname}} <a href='{{logoutUrl}}'>{#i18n msg="çıkış"/}</a>
+         <br/><input type='checkbox' value='yes' onchange="if (this.checked) showAdvanced(true); else showAdvanced(false);"/>{#i18n msg="Gelişmiş ayarları göster"/}
+         <br/><a href='/static/help/help.html'>{#i18n msg="Yardım"/}<img class='helpicon' src='/static/icons/qmark.png'/></a>
+        </div>
+        <img class='logomini' src="/static/icons/logo.svg"/>
+        <h1>
+         {#i18n msg="Profil"/}:{title}
+         &nbsp;&nbsp;&nbsp;<span id="profilesave" class="hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save profile changes" onclick="saveProfile();"></span>
+        </h1>
+        {#i18n msg="Profil linki"/} : <a href='/{.code}/' target='new'>http://e-skolastik.appspot.com/{.code}/</a> 
+        <div id='previewDiv' class='hidden'></div>
+        <div id='helpdiv'>
+         <span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>
+         {#i18n msg=" ikonları ile nesneleri (bölüm, yayın, dosya) sürükleyip sırasını değiştirebilirsiniz."/}
+         <br/><span style='border:1px solid black;display:inline-block;min-width:50px;'>xxxxxxx</span>
+         {#i18n msg="çerçeveli kutular içeriği değiştirilebilir alanları gösterir."/}
+        </div>
+
+        <h3>{#i18n msg="Profil ayarları"/}
+            <span class="es-actionicon ui-icon ui-icon-wrench" title="pofil ayarlarını göster" onclick="showProfileSettingsTab()"></span>
+        </h3>        
+        <div id='profileSettings' class='hidden'>
+         {#i18n msg="Adınız"/}:<span id="userName" contentEditable="true" class="es-editable" onInput="profileNeedsSave();" onkeypress="return preventEnter(event);">{name}</span>
+         <br/>{#i18n msg="Profil adı"/}:<span id="profileName" contentEditable="true" class="es-editable" onInput="profileNeedsSave();" onkeypress="return preventEnter(event);">{title}</span>
+         <br/>{#i18n msg="Profil kodu"/}:<input id="profileCode" type="input" value="{.code}" onInput="$('#profileCodeUpdater').removeClass('hidden');"/><button id="profileCodeUpdater" class='hidden' onClick='updateProfileCode()'>{#i18n msg="Değiştir"/}</button>
+         <br/> <span class='adminPartTitle'>{#i18n msg="Profil resmi"/}:</span>
+          {?profilePicture}
+          <img src="{profilePicture.fileUrl}" alt='profile picture' style="max-width:100px;"/>
+          {:else}
+          No picture
+          {/profilePicture}
+          <input id="profilePictureFile" type="file" class="hidden" onchange="setProfilePicture();"/>
+          <button title="set/change picture" onclick="document.getElementById('profilePictureFile').click();">...</button>        
+        <br/><span class='adminPartTitle'>{#i18n msg="Profil açıklaması"/}:</span><div id="profiledesc" contentEditable="true" class="es-editable es-editable-aloha profiledesc" onInput="profileNeedsSave();">{profiledesc|s}</div>
+         <br/><span class='adminPartTitle'>{#i18n msg="İlişkili kurumlar"/}</span> {#i18n msg="[AssociationsHelp]"/}
+        <br/><span id="associations">
+        {#associations}
+        &nbsp;&nbsp;&nbsp;<span contentEditable="true" class="es-editable association" onInput="profileNeedsSave();" onkeypress="return preventEnter(event);">{.name}</span>&nbsp;
+        {/associations}
+        </span>
+        </div>        
+
+        <span class='adminPartTitle'>{#i18n msg="Kullanılan tasarım"/}:</span> {?.chosenDesignName}{.chosenDesignName}{:else}{#i18n msg="Öntanımlı"/}{/.chosenDesignName}<span class="es-actionicon ui-icon ui-icon-wrench" title="change design" onclick="showDesignChoices()"></span>
+		  <button onclick="togglePreview()">{#i18n msg="Önizleme Göster/Gizle"/}</button>
+		  <div id='designChoices'>
+		  </div> 
+		  <div class='advancedSetting hidden'>       
+        <h3>{#i18n msg="Tasarımlarım"/}<span class="es-actionicon ui-icon ui-icon-plusthick" title="create new design" onclick="createDesign();"></span><span class="es-actionicon ui-icon ui-icon-wrench" title="edit designs" onclick="toggleElement('designsDiv')"></span></h3>
+         <div id="designsDiv">
+          {?designs}
+          
+			 {#designs}
+			 <div id='design_{.designKey}' class='designDiv'>
+				<span class="es-actionicon ui-icon ui-icon-closethick" title="delete design" onclick="deleteDesign('{.designKey}');"></span>
+				<span id="designsave-{.designKey}" class="hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save design changes" onclick="saveDesign('{.designKey}');"></span>
+				<br/>{#i18n msg="Tasarım ismi"/}: <span id='designname-{.designKey}' class='es-editable' contentEditable="true" onInput="designNeedsSave('{.designKey}');" onkeypress="return preventEnter(event);">{.name}</span>
+				<br/>{#i18n msg="Açıklama"/}: <span id='designdesc-{.designKey}' class='es-editable' contentEditable="true" onInput="designNeedsSave('{.designKey}');">{.desc}</span>
+				<br/>{#i18n msg="Şablon"/}: <textarea id='designtemplate-{.designKey}' onInput="designNeedsSave('{.designKey}');">{.template|s}</textarea>
+				<br/>{#i18n msg="Stil"/}: <textarea id='designstyle-{.designKey}' onInput="designNeedsSave('{.designKey}');">{.style|s}</textarea>
+            <!-- <div id="designinfos-{.designKey}">Information fields:
+               {#infos}
+               <div class='designinfofield'>
+               	<span class="designinfofieldname es-editable" contenteditable="true" onkeypress="return preventEnter(event);" onInput="designNeedsSave('{designKey}');">{.name}</span>:
+               	<span class="designinfofieldvalue es-editable" contenteditable="true"  onInput="designNeedsSave('{designKey}');">{.value}</span>
+               </div>
+               &nbsp;
+               {/infos}
+               <span id="designInfoInserter-{.designKey}" class="es-actionicon ui-icon ui-icon-plusthick" title="add field" onclick="addDesignInfoField('{.designKey}');"></span>
+            </div> -->
+			 </div>
+			{/designs}
+			{:else}
+			you have not created any designs
+			{/designs}
+			</div>
+        </div>
+        <h3>{#i18n msg="Bölümler"/}: <span class="es-actionicon ui-icon ui-icon-plusthick" title="add section" onclick="createSection();"></span>
+         </h3>        
+         {?sections}
+           <ol id="seclist" class='seclist ui-sortable'>
+           {#sections}
+           <li id="secli-{.sectionKey}" class="estemplate secli" tid="section"><span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>
+            <span id="stitle-{.sectionKey}" class="es-editable sectionname" contentEditable="true" onInput="sectionNeedsSave({.sectionKey});" onkeypress="return preventEnter(event);">{.title}</span>
+            <span class="es-actionicon ui-icon ui-icon-closethick" title="delete section" onclick="deleteSec({sectionKey});"></span> 
+            <span id="ssave-{.sectionKey}" class="hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save section" onclick="saveSection({.sectionKey});"></span>
+            <br/>Section description:<div id="secdesc-{.sectionKey}" contentEditable="true" class="es-editable es-editable-aloha secdesc" onInput="sectionNeedsSave({.sectionKey});">{.secdesc|s}</div>
+            <br/>{#i18n msg="Yayınlar"/}:
+            &nbsp;A<span class="es-actionicon ui-icon ui-icon-plusthick" title="add academic publication" onclick="createPublicationInSection({.sectionKey},'academic');">A</span>
+            &nbsp;&nbsp;N<span class="es-actionicon ui-icon ui-icon-plusthick" title="add non-academic publication" onclick="createPublicationInSection({.sectionKey},'non-academic');">N</span>
+            &nbsp;&nbsp;S<span class="es-actionicon ui-icon ui-icon-plusthick" title="add subsection separator" onclick="createPublicationInSection({.sectionKey},'sep');">S</span>
+            {?publications}
+               <ol id="publist-{.sectionKey}" class='publist ui-sortable'>
+               {#publications}
+                  <li id="publi-{sectionKey}-{.publicationKey}" class="estemplate publi" tid="publication"><span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>
+                     <strong>{.title}</strong>{?.issep}({#i18n msg="Altbölüm ayracı"/}){/.issep}
+                     <span class="es-actionicon ui-icon ui-icon-closethick" title="delete publication" onclick="deletePub({sectionKey},{.publicationKey})"></span>
+                     <span class="es-actionicon ui-icon ui-icon-wrench" title="edit publication" onclick="togglePubEdit({sectionKey},{.publicationKey})"></span>
+                     <span id="psave-{sectionKey}-{.publicationKey}" class="psaveicon hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save publication" onclick="savePublication({sectionKey},{.publicationKey});"></span>
+                     <div id="pedit-{sectionKey}-{.publicationKey}" class="hidden">
+                      <table>
+                       <tr  style="vertical-align:top;">
+                        <td>
+                        <span class='pflabel'>{#i18n msg="Başlık"/}:</span><span id="ptitle-{sectionKey}-{.publicationKey}" class="es-editable" contentEditable="true" onInput="publicationNeedsSave({sectionKey},{.publicationKey});" onkeypress="return preventEnter(event);">{.title}</span>
+                        <!-- <br/><span class='pflabel'>{#i18n msg="Bu akademik bir yayın mı?"/} ({#i18n msg="Ders notları, vb., için işareti kaldırın"/})</span> --> 
+                          <input type="checkbox" class='hidden peditispub' id="peditispub-{sectionKey}-{.publicationKey}" value="yes" onChange="publicationNeedsSave({sectionKey},{.publicationKey});setIsPub(this,{sectionKey},{.publicationKey});"/>
+                        <div id='nonpub-{sectionKey}-{.publicationKey}'>
+                           <span class='pflabel'>{#i18n msg="Açıklama"/}:</span><span id="pdesc-{sectionKey}-{.publicationKey}" class="es-editable es-editable-aloha" contentEditable="true" onInput="publicationNeedsSave({sectionKey},{.publicationKey});">{.desc|s}</span>
+                        </div>
+                        <div id='forpub-{sectionKey}-{.publicationKey}'>
+                           <div id="pubauthors-{sectionKey}-{.publicationKey}"><span class='pflabel'>{#i18n msg="Yazarlar"/}:</span>
+                              {#authors}
+                              <span class="pubauthor es-editable" contenteditable="true" onkeypress="return preventEnter(event);" onInput="publicationNeedsSave({sectionKey},{publicationKey});">{.name}</span>
+                              &nbsp;
+                              {/authors}
+                              <span id="authorInserter-{sectionKey}-{.publicationKey}" class="es-actionicon ui-icon ui-icon-plusthick" title="add author" onclick="addPubAuthor({sectionKey},{publicationKey});"></span>
+                           </div>
+                           <br/><span class='pflabel'>{#i18n msg="Yayın türü"/}:</span>
+                           <select class='peditptype' id="peditptype-{sectionKey}-{.publicationKey}" onchange="$('#espubfields-{sectionKey}-{.publicationKey}').removeClass().addClass('espubfields-'+this.value);publicationNeedsSave({sectionKey},{.publicationKey});">
+                           {% for t in esbibtex.typeList %}
+                           <option id="peditptypeoption-{sectionKey}-{.publicationKey}-{{t}}" value="{{t}}">{#i18n msg="{{t}}"/}</option>
+                           {% endfor %}
+                           </select>
+                           <div id="espubfields-{sectionKey}-{.publicationKey}" class="espubfields-article">
+                           {% for f in esbibtex.allFields %}
+                           	<span class="{{f}} pflabel">{#i18n msg="{{f}}"/}:</span>
+                           	<span id="espubfield-{.publicationKey}-{{f}}" contentEditable='true' class="espubfield {{f}}" onkeypress="return preventEnter(event);" onInput="publicationNeedsSave({sectionKey},{.publicationKey});">{pubinfo.{{f}}}</span>
+                           	<br class="{{f}}"/>
+                           {% endfor %}
+                           </div>
+                        </div>
+                        </td>
+                        <td style="vertical-align:top;">
+                        <div sid="{sectionKey}" pid="{.publicationKey}" id="peditdroptarget-{sectionKey}-{.publicationKey}" class='peditdropper'>
+                         drop files here, or click 
+                           <span id="pubfileAdder-{sectionKey}-{.publicationKey}" class="es-actionicon ui-icon ui-icon-plusthick" title="add file" onclick="initAddPubFile({sectionKey},{publicationKey});"></span>
+                           <input id='pubfileAdderElem-{sectionKey}-{.publicationKey}' type='file' class='hidden' onchange="addPubFile({sectionKey},{publicationKey});"/>
+                         <ol id="pubfilelist-{sectionKey}-{.publicationKey}" class="pubfilelist ui-sortable">
+                           {#pfiles}
+                            <li id="pubfile-{sectionKey}-{publicationKey}_____{.fileKey}"> <span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>  
+                                 <span class="es-actionicon ui-icon ui-icon-closethick" title="delete file" 
+                                   onclick="return deletePubFile({sectionKey},{publicationKey},'{.fileKey}');"></span>
+                                 <a href="{.fileUrl}" target='_new'>
+                                 {.fileName}
+                                </a>
+                                 <span title="Açıklama" id="pfdesc-{sectionKey}-{.publicationKey}}_____{.fileKey}" class="es-editable pfdesc" contentEditable="true" onInput="publicationNeedsSave({sectionKey},{publicationKey});">{.description|s}</span>
+                            </li>
+                           {/pfiles}
+                         </ol>
+                        </div>
+                        </td>
+                       </tr>
+                      </table>
+                     </div>
+                  </li>
+               {/publications}
+               </ol>
+            {:else}
+             <br/>No publications in this section
+            {/publications}
+           </li>
+           {/sections}
+           </ol>
+        {:else}
+         No sections are defined yet
+        {/sections}
+        <!-- <div class='advancedSetting hidden'>
+         <h3>{#i18n msg="Tercümeler"/}</h3>
+         <textarea id='translations' onInput="profileNeedsSave();">{translations}</textarea>
+        </div> -->
+     </div>
+  </div>
+  <!-- -------------------------------------------------------------------------- -->
+  <div id='profile'>
+  </div>
+  
+  <div id="loading-div-background">
+    <div id="loading-div" class="ui-corner-all" >
+      <img style="height:80px;margin:30px;" src="/static/icons/loading.gif" alt="Loading.."/>
+      <h2 style="color:gray;font-weight:normal;">Lütfen bekleyin....</h2>
+     </div>
+</div>
+ </body>
+</html>
