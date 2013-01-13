@@ -10,6 +10,10 @@ function adminReload(skey,pkey) {
   //    window.location.reload();
       callAPIAndRenderToElement("/api/getProfile",{},"admin","profile",function(result,elementid){
             adjustElements(result,elementid); 
+            Aloha.ready( function() {
+                            var $ = Aloha.jQuery;
+                            $('.es-editable-aloha').aloha();
+                     });  
             if (skey && pkey) {
                esdebug("expanding pub"); 
                togglePubEdit(skey,pkey);
