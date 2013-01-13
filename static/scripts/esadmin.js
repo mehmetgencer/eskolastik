@@ -13,7 +13,8 @@ function adminReload(skey,pkey) {
             if (skey && pkey) {
                esdebug("expanding pub"); 
                togglePubEdit(skey,pkey);
-            }       
+            }  
+            //$(".ui-icon").css("display","inline-block !important");     
          });
 }
 
