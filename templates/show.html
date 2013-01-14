@@ -92,17 +92,17 @@
 	   	<p class='profileDescription'>{profiledesc|s}</p>
    	</div>
    	{#sections}
-   	 <a name='{.sectionKey}'/><h2>{#i18n msg=.title/}</h2>
+   	 <a name='{.sectionKey}'></a><h2>{#i18n msg=.title/}</h2>
    	 <p>{secdesc|s}</p>
    	 <ul class='publist'>
    	 {#publications}
-   	  <li>
    	     {?.issep}
    	        </ul>
-   	        <h3><a name="{sectionKey}-{.publicationKey}"/>{.title}</h3>
+   	        <h3><a name="{sectionKey}-{.publicationKey}"></a>{.title}</h3>
    	        <div>{.desc|s}</div>
    	        <ul class='publist'>
    	     {:else}
+             <li>
       	  	  {?.ispub}
          	     ({#i18n msg=.pubtype/})
          	     {#citeproc/}
@@ -123,8 +123,8 @@
       	       {/pfiles}
       	       </div>
       	     {/pfiles}
+             </li>
    	     {/.issep} 
-   	  </li>
    	 {/publications}
    	 </ul>
    	{/sections}

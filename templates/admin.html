@@ -146,7 +146,7 @@
                <ol id="publist-{.sectionKey}" class='publist ui-sortable'>
                {#publications}
                   <li id="publi-{sectionKey}-{.publicationKey}" class="estemplate publi" tid="publication"><span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>
-                     <strong>{.title}</strong>{?.issep}({#i18n msg="Altbölüm ayracı"/}){/.issep}
+                     <strong>{.title}</strong>{?.issep}<span style='background-color:#BBB'>({#i18n msg="Altbölüm ayracı"/})</span>{/.issep}
                      <span class="es-actionicon ui-icon ui-icon-closethick" title="delete publication" onclick="deletePub({sectionKey},{.publicationKey})"></span>
                      <span class="es-actionicon ui-icon ui-icon-wrench" title="edit publication" onclick="togglePubEdit({sectionKey},{.publicationKey})"></span>
                      <span id="psave-{sectionKey}-{.publicationKey}" class="psaveicon hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save publication" onclick="savePublication({sectionKey},{.publicationKey});"></span>
