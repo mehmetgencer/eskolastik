@@ -48,12 +48,15 @@ Aşağıdaki -basitleştirilmiş- örnekte birden fazla sayıda olabilecek liste
         "sections": [
           {
             "secdesc": "Bölüm açıklaması",
+            "sectionKey": 111, //Bu bölüme sistem tarafından verilmiş tekil bir sayı.
             "publications": [
               {
+                "title": "yayın 1",
+                "publicationKey":222, //Bu yayına sistem tarafından verilmiş tekil bir sayı
+                "desc": "yayın açıklaması",
                 "ispub": true, //eğer doğru ise bu bir akademik yayındır ve aşağıdaki "pubinfo" alanları kullanılır
                                //Değilse sadece başlık ve açıklama alanları kullanılmalıdır.
-                "title": "yayın 1",
-                "desc": "yayın açıklaması",
+                "issep": false, //Bu bir alt-bölüm ayracı ise 'true' değerini alır.
                 "pubtype": "inproceedings",
                 "pfiles": [
                   { 

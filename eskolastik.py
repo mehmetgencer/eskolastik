@@ -128,7 +128,7 @@ class ProfilePicture(db.Model):
     file = db.BlobProperty()
     thumbnail = db.BlobProperty()
     def asJson(self):
-        return {"fileKey":str(self.key()),"fileUrl":"/files/%s"%self.key(),
+        return {"fileKey":str(self.key()),"fileUrl":"/files/%s?%s"%(self.fileName, self.key()),
                 "fileName":self.fileName}
 
 #  def getPublications(self):
@@ -179,7 +179,7 @@ class PublicationFile(db.Model):
     displayOrder=db.IntegerProperty()
     description=db.TextProperty(default="")
     def asJson(self):
-        return {"fileKey":str(self.key()),"fileUrl":"/files/%s"%self.key(),
+        return {"fileKey":str(self.key()),"fileUrl":"/files/%s?%s"%(self.fileName, self.key()),
                 "fileName":self.fileName,"displayOrder":self.displayOrder,
                 "description":self.description}
 class ProfileDesign(db.Model):
@@ -260,12 +260,15 @@ def getProfile(pid,designChoice=None):
             #self.response.out.write(template.render(path, {"pid":pid,"hasDesign":hasDesign,"template":dtemplate,"style":dstyle}))
             return template.render(path, {"pid":pid,"hasDesign":hasDesign,"template":dtemplate,"style":dstyle,"translations":p.translations,"designTranslations":dtrans,"profileJson":json.dumps(p.asJson()), "allFiles":p.getAllFiles(),})
 class ServeFile(webapp.RequestHandler):
-    def getALT(self,fk):
-        blob_info = blobstore.BlobInfo.get(blobstore.BlobKey(fk))
-        type = blob_info.content_type
-        self.response.headers['Content-Type'] = type
-        self.send_blob(blob_info)
-    def get(self,fk):
+#    def getALT(self,fk,fname):
+#        logging.info("Serving file:"+str(fk))
+#        blob_info = blobstore.BlobInfo.get(blobstore.BlobKey(fk))
+#        type = blob_info.content_type
+#        self.response.headers['Content-Type'] = type
+#        self.send_blob(blob_info)
+    def get(self,fname):
+        fk=self.request.query_string
+        logging.info("Serving file:"+str(fk))
         pfile=db.get(fk)
         ctype=mimetypes.guess_type(pfile.fileName)[0]
         self.response.headers['Content-Type'] = ctype
@@ -604,7 +607,7 @@ Profile: {title} <br/>
     
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                      ('/files/(?P<fk>.+)$', ServeFile),
+                                      ('/files/(?P<fname>.+)', ServeFile),
                                       ('/admin', AdminPage),
                                       ("/api/(?P<fn>\w+)$",ESAPI),
                                       ("/apipublic/(?P<fn>\w+)$",ESAPIPublic),

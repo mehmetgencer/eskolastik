@@ -46,9 +46,11 @@
      .profileDescription {display:inline-block;margin:10px;}
      .describedFile{display:block;}
      .navmenu {list-style-type: none; padding-left: 5px;}
-     .navmenu li {padding:3px 0; margin: 3px 0;border-radius: 8px;background-color: lightgray;}
+     .navmenu li  {padding:3px 0; margin: 3px 0;border-radius: 8px;background-color: lightgray;}
      .navmenu a{text-decoration:none;padding:2px;font-weight: bold; color:black; margin-left:5px;display:inline-block;}
      .navmenu a:hover{color:red; }
+     .navmenu .navsubmenu{display:none;list-style-type: none;font-size:smaller;}
+     .navmenu li:hover .navsubmenu{display:block;}
      /*.publist li:nth-child(odd) { background-color: #EAEAEA;}
      .publist li:nth-child(even) { background-color: #F8F8F8;}*/
      .publist li {padding-bottom: 8px;}
@@ -72,7 +74,15 @@
 	   	{/profilePicture}
 	   	<ul class='navmenu'>
 	   	{#sections}
-	   	<li><a href='#{.sectionKey}'>{#i18n msg=.title/}</a></li>
+	   	<li><a href='#{.sectionKey}'>{#i18n msg=.title/}</a>
+	   	 <ul class='navsubmenu'>
+	   	 {#publications}
+	   	 {?.issep}
+	   	 <li><a href='#{sectionKey}-{.publicationKey}'>{#i18n msg=.title/}</a></li>
+	   	 {/.issep}
+	   	 {/publications}
+	   	 </ul>
+	   	</li>
 	   	{/sections}
 	   	</ul>
      </div>
@@ -89,7 +99,7 @@
    	  <li>
    	     {?.issep}
    	        </ul>
-   	        <h3>{.title}</h3>
+   	        <h3><a name="{sectionKey}-{.publicationKey}"/>{.title}</h3>
    	        <div>{.desc|s}</div>
    	        <ul class='publist'>
    	     {:else}

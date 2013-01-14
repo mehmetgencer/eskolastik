@@ -45,12 +45,15 @@
     &quot;sections&quot;: [
       {
         &quot;secdesc&quot;: &quot;Bölüm açıklaması&quot;,
+        &quot;sectionKey&quot;: 111, //Bu bölüme sistem tarafından verilmiş tekil bir sayı.
         &quot;publications&quot;: [
           {
+            &quot;title&quot;: &quot;yayın 1&quot;,
+            &quot;publicationKey&quot;:222, //Bu yayına sistem tarafından verilmiş tekil bir sayı
+            &quot;desc&quot;: &quot;yayın açıklaması&quot;,
             &quot;ispub&quot;: true, //eğer doğru ise bu bir akademik yayındır ve aşağıdaki &quot;pubinfo&quot; alanları kullanılır
                            //Değilse sadece başlık ve açıklama alanları kullanılmalıdır.
-            &quot;title&quot;: &quot;yayın 1&quot;,
-            &quot;desc&quot;: &quot;yayın açıklaması&quot;,
+            &quot;issep&quot;: false, //Bu bir alt-bölüm ayracı ise &#39;true&#39; değerini alır.
             &quot;pubtype&quot;: &quot;inproceedings&quot;,
             &quot;pfiles&quot;: [
               { 
