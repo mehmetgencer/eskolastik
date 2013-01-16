@@ -54,8 +54,8 @@ class Profile(db.Model):
       the whole profile can be downloaded locally.
       """
       sections=[s for s in self.getSections()]
-      pubs=reduce(list.__add__, [[p for p in s.getPublications()] for s in sections])
-      files=reduce(list.__add__, [[f for f in p.getFiles()] for p in pubs])
+      pubs=reduce(list.__add__, [[p for p in s.getPublications()] for s in sections],[])
+      files=reduce(list.__add__, [[f for f in p.getFiles()] for p in pubs],[])
       return [self.getProfilePicture()] + files 
         
   def asJson(self):
