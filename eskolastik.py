@@ -598,8 +598,7 @@ class ESAPI(ESAPIBase):
         profile=Profile.ensureProfile(users.get_current_user())
         pfile=db.get(self.getPostJson()["fkey"])
         if pfile.fileIsBlob():
-            #files.blobstore.delete(pfile.blobkey)
-            logging.info("TODO!!!!!!!!!!!!!!!!!!!!!!!!!! MUST DELETE BLOB:")
+            pfile.blobkey.delete()
         pfile.delete()
         return {}
     def createDesign(self):
