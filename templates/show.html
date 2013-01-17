@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 	<meta charset="utf-8">
@@ -13,19 +14,19 @@
     <script type="text/javascript" src="/static/scripts/citeproc/xmldom.js"></script>
     <script type="text/javascript" src="/static/scripts/citeproc/citeproc.js"></script>
 	 <script src='/static/scripts/esclient.js'></script>
-    <link rel="stylesheet" href="/static/stylesheets/escore.less" />   
+    <link rel="stylesheet/less" href="/static/stylesheets/escore.less" />
+    <script type="text/javascript" src="/static/scripts/less-1.3.1.min.js"></script>   
     <!--[if IE]>
     <script type="text/javascript" src="/static/scripts/json2.js"></script>
     <![endif]-->
 	 <script type="text/javascript">
-	 var userTranslations={{translations|safe}};
 	 {% if designTranslations %}
 	 var designTranslations={{designTranslations|safe}};
 	 {%endif%}
 	 </script>
 	 <script type="text/javascript">
- 	     escache["/apipublic/getProfile?profile={{pid}}"+JSON.stringify({})]={{profileJson|safe}};
        $(function() {
+ 	     escache["/apipublic/getProfile?profile={{pid}}"+JSON.stringify({})]={{profileJson|safe}};
          autoLoadTemplates();
          callAPIAndRenderToElement("/apipublic/getProfile?profile={{pid}}",{},"default","pageDiv",function(result){
             //adjustElements(result);   
@@ -69,9 +70,11 @@
      </div>
 
      <div id='left-menu'>
-	   	{?profilePicture}
+	   	<div style='min-height:150px;display:inline-block;'>
+	   	{?profilePicture.fileUrl}
 	   	<img class='profilePicture' src='{profilePicture.fileUrl}'/> 
-	   	{/profilePicture}
+	   	{/profilePicture.fileUrl}
+	   	</div>
 	   	<ul class='navmenu'>
 	   	{#sections}
 	   	<li><a href='#{.sectionKey}'>{#i18n msg=.title/}</a>
@@ -141,7 +144,7 @@
   <a href='{{f.asJson.fileUrl}}'></a>
   {% endfor %}
   </div>
-  <a class='linkpersistent' href='http://e-skolastik.appspot.com'>powered by <img class='logopersistent' src="/static/icons/logo.svg"/></a>
+  <a class='linkpersistent' href='http://e-skolastik.appspot.com'>powered by <img class='logopersistent' src="/static/icons/logo.jpg"/></a>
   <div id="loading-div-background">
     <div id="loading-div" class="ui-corner-all" >
       <img style="height:80px;margin:30px;" src="/static/icons/loading.gif" alt="Loading.."/>

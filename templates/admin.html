@@ -1,7 +1,7 @@
 <html>
 	<head>
 	<meta charset="utf-8">
-    <link rel="stylesheet" href="/static/stylesheets/escore.less" />   
+    <link rel="stylesheet/less" href="/static/stylesheets/escore.less" />   
     <link rel="stylesheet" href="/static/stylesheets/esadmin.less" />   
 	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
@@ -20,7 +20,7 @@
                                                         common/highlighteditables">
               </script>
     <link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
-    
+    <script type="text/javascript" src="/static/scripts/less-1.3.1.min.js"></script>
 	 <script type="text/javascript">
 	     var username="{{user.nickname}}";
        $(function() {
@@ -224,6 +224,9 @@
      </div>
   </div>
   <!-- -------------------------------------------------------------------------- -->
+  <!--[if IE]>
+	<h1 style='color:red;'>Yönetim konsolu Internet Explorer ile çalışmamaktadır!</h1>
+  <![endif]-->
   <div id='profile'>
   </div>
   

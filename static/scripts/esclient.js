@@ -32,12 +32,14 @@
    */ 
  function makeCiteprocAuthors(authors) {
     retval=[];
-    for (var i in authors) {
+    esdebug("IE-DEBUG authors:"+authors);
+    for (var i=0;i<authors.length;i=i+1) {
        author=authors[i]||"";
+       esdebug("IE-DEBUG i:"+i);
        esdebug("Author:"+author);
        if (author.length==0)
          continue;
-       //esdebug("Parsing author:"+author);
+       esdebug("IE-DEBUG Parsing author:"+author);
        aparts=author.split(" ");
        given=[];
        family=[];
