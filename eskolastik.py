@@ -2,6 +2,7 @@
 #See
 #app   https://appengine.google.com 
 #help  https://developers.google.com/appengine/docs/python/gettingstarted/introduction
+from __future__ import with_statement
 import os,json, logging, mimetypes, sys
 import datetime
 import urllib
@@ -12,11 +13,14 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.api import files
+from google.appengine.ext.webapp import blobstore_handlers
 from esbibtex import  ESBibtex
 MAXNUM_PUBLICATIONS=200
 MAXNUM_FILES=300
 MAXNUM_SECTIONS=20
 MAXNUM_DESIGNS=10
+MAXFILESIZEMB=5
 def _(msg):
     return msg
 
@@ -127,6 +131,8 @@ class ProfilePicture(db.Model):
     fileName=db.StringProperty()
     file = db.BlobProperty()
     thumbnail = db.BlobProperty()
+    def fileIsBlob(self):
+        return False
     def asJson(self):
         return {"fileKey":str(self.key()),"fileUrl":"/files/%s?%s"%(self.fileName, self.key()),
                 "fileName":self.fileName}
@@ -178,8 +184,20 @@ class PublicationFile(db.Model):
     file = db.BlobProperty()
     displayOrder=db.IntegerProperty()
     description=db.TextProperty(default="")
+    isBlob=db.BooleanProperty(default=False)
+    blobkey=blobstore.BlobReferenceProperty(required=False)
+    def fileIsBlob(self):
+        return self.isBlob
+    def getBlobInfo(self):
+        blob_info = blobstore.BlobInfo.get(self.blobkey)
+        return blob_info
     def asJson(self):
-        return {"fileKey":str(self.key()),"fileUrl":"/files/%s?%s"%(self.fileName, self.key()),
+        if self.isBlob:
+            return {"fileKey":str(self.key()),"fileUrl":"/bigfiles/%s?%s"%(self.fileName, self.key()),
+                "fileName":self.fileName,"displayOrder":self.displayOrder,
+                "description":self.description}
+        else:
+            return {"fileKey":str(self.key()),"fileUrl":"/files/%s?%s"%(self.fileName, self.key()),
                 "fileName":self.fileName,"displayOrder":self.displayOrder,
                 "description":self.description}
 class ProfileDesign(db.Model):
@@ -273,7 +291,22 @@ class ServeFile(webapp.RequestHandler):
         ctype=mimetypes.guess_type(pfile.fileName)[0]
         self.response.headers['Content-Type'] = ctype
         logging.info("content type:"+ctype)
-        self.response.out.write(pfile.file)
+        if not pfile.fileIsBlob():
+            self.response.out.write(pfile.file)
+        else:
+            #h=blobstore_handlers.BlobstoreDownloadHandler(self)
+            #h.send_blob(pfile.blobkey)
+            blobstore_handlers.BlobstoreDownloadHandler.send_blob(self,BlobInfo.get(pfile.blobkey))
+class ServeBlob(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, fname):
+        fk=self.request.query_string
+        logging.info("Serving file:"+str(fk))
+        pfile=db.get(fk)
+        ctype=mimetypes.guess_type(pfile.fileName)[0]
+        self.response.headers['Content-Type'] = ctype
+        logging.info("content type:"+ctype)
+        self.send_blob(pfile.blobkey)
+
 class AdminPage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
@@ -543,7 +576,20 @@ class ESAPI(ESAPIBase):
                 raise EskolastikException(_(u"Dosya sayisi maksimum siniri asiyor"))
             pfile=PublicationFile(parent=pub.key(),fileName=fname,displayOrder=pub.getFiles().count()+1)
             f=self.request.get(fname)
-            pfile.file=db.Blob(f)
+            logging.info("UPLOADED FILE LENGTH:"+str(len(f)))
+            if (len(f)>=MAXFILESIZEMB*1024*1024):
+                 raise EskolastikException(_(u"Dosya boyutu maksimum siniri (5MB) asiyor"))
+            elif (len(f)>=2*1024*1024):# see https://developers.google.com/appengine/docs/python/blobstore/overview
+                pfile.isBlob=True
+                mtype=mimetypes.guess_type(fname)[0]
+                file_name = files.blobstore.create(mime_type=mtype)
+                with files.open(file_name, 'a') as bf:
+                    bf.write(f)
+                files.finalize(file_name)
+                pfile.blobkey = files.blobstore.get_blob_key(file_name)
+            else:
+                pfile.isBlob=False
+                pfile.file=db.Blob(f)
             pfile.put()
             logging.info("SAVED FILE:"+fname)
         return {}
@@ -551,6 +597,9 @@ class ESAPI(ESAPIBase):
         #logging.info("Will delete pub:"+self.getPostJson()["sectionKey"]+" / "+self.getPostJson()["publicationKey"])
         profile=Profile.ensureProfile(users.get_current_user())
         pfile=db.get(self.getPostJson()["fkey"])
+        if pfile.fileIsBlob():
+            #files.blobstore.delete(pfile.blobkey)
+            logging.info("TODO!!!!!!!!!!!!!!!!!!!!!!!!!! MUST DELETE BLOB:")
         pfile.delete()
         return {}
     def createDesign(self):
@@ -608,6 +657,7 @@ Profile: {title} <br/>
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/files/(?P<fname>.+)', ServeFile),
+                                      ('/bigfiles/(?P<fname>.+)', ServeBlob),
                                       ('/admin', AdminPage),
                                       ("/api/(?P<fn>\w+)$",ESAPI),
                                       ("/apipublic/(?P<fn>\w+)$",ESAPIPublic),
