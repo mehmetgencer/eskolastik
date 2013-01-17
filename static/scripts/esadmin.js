@@ -267,6 +267,10 @@ function deleteDesign(dkey){
 function setProfilePicture(){
 	postFiles("/api/setProfilePicture",{}, document.getElementById("profilePictureFile").files,function(data) {adminReload();});
 	}
+function deleteProfilePicture(){
+   makeAPICall("/api/deleteProfilePicture",{},function(){adminReload();});
+}
+	
 function showAdvanced(show){
     if (show) 
       $(".advancedSetting").removeClass("hidden");

@@ -376,7 +376,7 @@ class ESAPI(ESAPIBase):
              "deleteSec","updatePub","updateSec","addPublicationFiles",
              "deletePubFile","getPublication","updateProfile","createDesign",
              "deleteDesign","updateDesign", "setProfilePicture","getDesignAlternatives",
-             "chooseDesign","updateProfileCode"]
+             "chooseDesign","updateProfileCode","deleteProfilePicture"]
     def getProfile(self):
         profile=Profile.ensureProfile(users.get_current_user())
         return profile.asJson()
@@ -473,6 +473,10 @@ class ESAPI(ESAPIBase):
             pfile.thumbnail=thumbnail
             pfile.put()
             logging.info("SAVED FILE:"+fname)
+        return {}
+    def deleteProfilePicture(self):
+        profile=Profile.ensureProfile(users.get_current_user())
+        profile.removeExistingPicture()
         return {}
     def getDesignAlternatives(self):
         profile=Profile.ensureProfile(users.get_current_user())

@@ -78,11 +78,12 @@
          <br/>{#i18n msg="Profil adı"/}:<span id="profileName" contentEditable="true" class="es-editable" onInput="profileNeedsSave();" onkeypress="return preventEnter(event);">{title}</span>
          <br/>{#i18n msg="Profil kodu"/}:<input id="profileCode" type="input" value="{.code}" onInput="$('#profileCodeUpdater').removeClass('hidden');"/><button id="profileCodeUpdater" class='hidden' onClick='updateProfileCode()'>{#i18n msg="Değiştir"/}</button>
          <br/> <span class='adminPartTitle'>{#i18n msg="Profil resmi"/}:</span>
-          {?profilePicture}
+          {?profilePicture.fileUrl}
           <img src="{profilePicture.fileUrl}" alt='profile picture' style="max-width:100px;"/>
+          <span class="es-actionicon ui-icon ui-icon-closethick" title="delete picture" onclick="deleteProfilePicture();"></span>
           {:else}
           No picture
-          {/profilePicture}
+          {/profilePicture.fileUrl}
           <input id="profilePictureFile" type="file" class="hidden" onchange="setProfilePicture();"/>
           <button title="set/change picture" onclick="document.getElementById('profilePictureFile').click();">...</button>        
         <br/><span class='adminPartTitle'>{#i18n msg="Profil açıklaması"/}:</span><div id="profiledesc" contentEditable="true" class="es-editable es-editable-aloha profiledesc" onInput="profileNeedsSave();">{profiledesc|s}</div>
