@@ -13,6 +13,7 @@
 <div id="TOC">
 <ul>
 <li><a href="#kullanıcılar-için">Kullanıcılar için</a><ul>
+<li><a href="#profilimi-nasıl-düzenleyeceğim">Profilimi nasıl düzenleyeceğim?</a></li>
 <li><a href="#e-skolastik-profilimi-alıp-başka-bir-yere-koyabilir-miyim">e-Skolastik profilimi alıp başka bir yere koyabilir miyim?</a></li>
 <li><a href="#yayın-dışındaki-şeyleri-nasıl-listeleyebilirim">Yayın dışındaki şeyleri nasıl listeleyebilirim?</a></li>
 </ul></li>
@@ -23,15 +24,19 @@
 </ul>
 </div>
 <h1 id="kullanıcılar-için"><a href="#TOC">Kullanıcılar için</a></h1>
+<h2 id="profilimi-nasıl-düzenleyeceğim"><a href="#TOC">Profilimi nasıl düzenleyeceğim?</a></h2>
+<p>Öncelikle profil yönetim ekranındaki + işareti ile bir bölüm ekleyin. Her bölümün altına + işaretlerini kullanarak. akademik veya akademik olmayan yayınlar ekleyebilirsiniz. Akademik yayınlar bibliyografik bilgileri (yazar, bölüm, editçrler, vb.) girebileceğiniz şekilde tasarlanmıştır. Bunun dışındaki (ders notu, vs.) yayınları akademik olmayan yayın olarak girebilirsiniz.</p>
+<p>Ayrıca bölümleri kendi içinde alt bölümlere ayırmak için üçüncü + ikonu ile &quot;bölüm ayracı&quot; ekleyebilirsiniz.</p>
+<p>Profil yönetim ekranının en üstündeki profil ayarları kısmına gireceğiniz açıklama ve seçeceğiniz resim (max 1MB) profilinizin en üstünde gözükecektir. Bu açıklama kısmına iletişim bilgilerinizi eklemeniz önerilir.</p>
+<p>Profilinizdeki yayınlar için bir veya birden fazla dosya ekleyebilirsiniz. Bu dosyalar en fazla 5MB olabilir.</p>
 <h2 id="e-skolastik-profilimi-alıp-başka-bir-yere-koyabilir-miyim"><a href="#TOC">e-Skolastik profilimi alıp başka bir yere koyabilir miyim?</a></h2>
 <p>e-Skolastik bunu yapabilmeniz için tasarlanmıştır. Tabii profilinizi her değiştirdiğinizde aktarma işlemini tekrarlamanız gerekeceğini unutmayın.</p>
 <p>Linux kullanıcıları 'wget' programı ile bu işlemi kolayca yapabilirler. Programa profil linkinizi verip uygun seçenekleri kullanarak profil sayfanızı ve onun içine gömülü diğer dosyaları yerel dosya sisteminize indirebilirsiniz.</p>
-<p>Örnek: wget -r -p -I /files http://localhost:8080/MehmetGencer/</p>
+<p>Örnek: wget -r -p -I /files http://e-skolastik.appspot.com/MehmetGencer/</p>
 <h2 id="yayın-dışındaki-şeyleri-nasıl-listeleyebilirim"><a href="#TOC">Yayın dışındaki şeyleri nasıl listeleyebilirim?</a></h2>
-<p>Örneğin üyesi bulunduğunuz meslek örgütlerini listeleyeceksiniz. Bunun için bir bölüm yaratın. Bu yeni bölüme yayınlar ekleyin ama bu yayınlarda &quot;akademik yayın mı?&quot; kutusundaki işareti kaldırın. Açıklama kısmına gerekli açıklamayı yazın.</p>
-<p>Ders notları vs. için de benzeri şekilde ayrı bölümler oluşturabilir, ve dosya da ekleyebilirsiniz. Eklenen parçalar &quot;yayın&quot; adını taşısa da &quot;bu bir akademik yayın mı&quot; işaretini kaldırdığınızda jenerik bir liste elemanına dönüşecektir. Bu tür nesneler bibliyografik veri olarak kullanılmaz.</p>
+<p>Örneğin üyesi bulunduğunuz meslek örgütlerini listeleyeceksiniz. Bunun en pratik yolu bunun için bir bölüm veya bölü ayracının açıklama kısmını kullanmaktır. Açıklama kısımlarına girdiğinizde beliren editör size bu kısımlara liste girme imkanı verir.</p>
 <h1 id="ileri-düzey-kullanıcılar-için"><a href="#TOC">İleri düzey kullanıcılar için</a></h1>
-<p>Yönetim sayfasında sağ üst köşedeki 'HGelişmiş ayarları göster' seçeneği ile normalde gözükmeyen bazı ayarları görünür hale getirebilirsiniz. Bu yeni ayarlar kendi sayfa tasarımınızı oluşturmak, metin parçacıklarının tercümesini girmek gibi işlevleri etkinleştirir.</p>
+<p>Yönetim sayfasında sağ üst köşedeki 'Gelişmiş ayarları göster' seçeneği ile normalde gözükmeyen bazı ayarları görünür hale getirebilirsiniz. Bu yeni ayarlar kendi sayfa tasarımınızı oluşturmak, metin parçacıklarının tercümesini girmek gibi işlevleri etkinleştirir.</p>
 <h2 id="kendi-tasarımınızı-yapma"><a href="#TOC">Kendi tasarımınızı yapma</a></h2>
 <p>e-Skolastik profil sayfaları http://akdubya.github.com/dustjs/ şablonları kullanılarak görüntülenir. Tüm profil bilgileriniz tek bir JSON veri yapısı olarak seçilen dust.js şablonuna verilir ve bu şablondan çıkan HTML profil sayfasını oluşturur. Bu işlemlerin tamamı istemcide (web tarayıcı) yapılmaktadır.</p>
 <p>Kendi tasarımınızı yapabilmek için iki bilgiye ihtiyacınız olacak. Birincisi profil bilgilerinizin JSON veri yapısı. Aşağıdaki -basitleştirilmiş- örnekte birden fazla sayıda olabilecek listeler ... ile gösterilmiştir:</p>

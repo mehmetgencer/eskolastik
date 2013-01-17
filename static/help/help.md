@@ -2,6 +2,19 @@
 
 Kullanıcılar için
 ===================
+Profilimi nasıl düzenleyeceğim?
+---------------------------------------------------
+Öncelikle profil yönetim ekranındaki + işareti ile bir bölüm ekleyin. Her bölümün altına + işaretlerini kullanarak. akademik veya akademik olmayan yayınlar ekleyebilirsiniz. 
+Akademik yayınlar bibliyografik bilgileri (yazar, bölüm, editçrler, vb.) girebileceğiniz şekilde
+tasarlanmıştır. Bunun dışındaki (ders notu, vs.) yayınları akademik olmayan yayın olarak girebilirsiniz.
+
+Ayrıca bölümleri kendi içinde alt bölümlere ayırmak için üçüncü + ikonu ile "bölüm ayracı" ekleyebilirsiniz.  
+
+Profil yönetim ekranının en üstündeki profil ayarları kısmına gireceğiniz açıklama ve seçeceğiniz resim (max 1MB)
+profilinizin en üstünde gözükecektir. Bu açıklama kısmına iletişim bilgilerinizi eklemeniz önerilir.
+
+Profilinizdeki yayınlar için bir veya birden fazla dosya ekleyebilirsiniz. Bu dosyalar en fazla 5MB olabilir.
+
 e-Skolastik profilimi alıp başka bir yere koyabilir miyim?
 ---------------------------------------------------------------
 e-Skolastik bunu yapabilmeniz için tasarlanmıştır. Tabii profilinizi her değiştirdiğinizde aktarma işlemini 
@@ -15,17 +28,13 @@ seçenekleri kullanarak profil sayfanızı ve onun içine gömülü diğer dosya
 
 Yayın dışındaki şeyleri nasıl listeleyebilirim?
 ------------------------------------------------
-Örneğin üyesi bulunduğunuz meslek örgütlerini listeleyeceksiniz. Bunun için bir bölüm yaratın. 
-Bu yeni bölüme yayınlar ekleyin ama bu yayınlarda "akademik yayın mı?" kutusundaki işareti kaldırın.
-Açıklama kısmına gerekli açıklamayı yazın.
-
-Ders notları vs. için de benzeri şekilde ayrı bölümler oluşturabilir, ve dosya da ekleyebilirsiniz. 
-Eklenen parçalar "yayın" adını taşısa da "bu bir akademik yayın mı" işaretini kaldırdığınızda 
-jenerik bir liste elemanına dönüşecektir. Bu tür nesneler bibliyografik veri olarak kullanılmaz. 
+Örneğin üyesi bulunduğunuz meslek örgütlerini listeleyeceksiniz. Bunun en pratik yolu
+bunun için bir bölüm veya bölü ayracının açıklama kısmını kullanmaktır. Açıklama kısımlarına
+girdiğinizde beliren editör size bu kısımlara liste girme imkanı verir.
 
 İleri düzey kullanıcılar için
 ==============================
-Yönetim sayfasında sağ üst köşedeki 'HGelişmiş ayarları göster' seçeneği ile normalde gözükmeyen bazı 
+Yönetim sayfasında sağ üst köşedeki 'Gelişmiş ayarları göster' seçeneği ile normalde gözükmeyen bazı 
 ayarları görünür hale getirebilirsiniz. Bu yeni ayarlar kendi sayfa tasarımınızı oluşturmak, metin parçacıklarının
 tercümesini girmek gibi işlevleri etkinleştirir.
 
