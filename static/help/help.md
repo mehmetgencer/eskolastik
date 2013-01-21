@@ -4,11 +4,13 @@ Kullanıcılar için
 ===================
 Profilimi nasıl düzenleyeceğim?
 ---------------------------------------------------
-Öncelikle profil yönetim ekranındaki + işareti ile bir bölüm ekleyin. Her bölümün altına + işaretlerini kullanarak. akademik veya akademik olmayan yayınlar ekleyebilirsiniz. 
+Öncelikle profil yönetim ekranındaki + işareti ile bir bölüm ekleyin. Her bölümün altına A+ N+ işaretlerini kullanarak
+akademik yayınlar veya akademik olmayan yayınlar/belgeler ekleyebilirsiniz. 
 Akademik yayınlar bibliyografik bilgileri (yazar, bölüm, editçrler, vb.) girebileceğiniz şekilde
-tasarlanmıştır. Bunun dışındaki (ders notu, vs.) yayınları akademik olmayan yayın olarak girebilirsiniz.
+tasarlanmıştır. Bunun dışındaki (ders notu, vs.) yayınları akademik olmayan belge olarak girebilirsiniz.
 
-Ayrıca bölümleri kendi içinde alt bölümlere ayırmak için üçüncü + ikonu ile "bölüm ayracı" ekleyebilirsiniz.  
+Ayrıca bölümleri kendi içinde alt bölümlere ayırmak için S+ ikonu ile "altbölüm ayracı" ekleyebilirsiniz. Altbölüm
+ayracına "açıklama" girerek bu ayracın tamamını bir altbölüm gibi de kullanabilirsiniz. 
 
 Profil yönetim ekranının en üstündeki profil ayarları kısmına gireceğiniz açıklama ve seçeceğiniz resim (max 1MB)
 profilinizin en üstünde gözükecektir. Bu açıklama kısmına iletişim bilgilerinizi eklemeniz önerilir.

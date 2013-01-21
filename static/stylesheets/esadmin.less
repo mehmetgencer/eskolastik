@@ -6,6 +6,9 @@
 .hidden {
    display:none !important;
 }
+h3{
+	background-color:lightgray;
+}
 .es-actionicon-warning {
    background-color:red;
 }
@@ -53,8 +56,9 @@
    background-color: #DDF;
    border: 2px solid #AAA;
    margin:4px;
+   display:inline-block;
 }
-.publi:nth-child(even) {background-color: #F2DDFF;}
+/*.publi:nth-child(even) {background-color: #F2DDFF;}*/
 /*.secli:before {
     content: counter(sections); 
     counter-increment:sections; 
@@ -66,6 +70,20 @@
     font-weight:bold;
     text-align:center;
 }*/
+.publi-PID{
+   font-weight:bold;
+   font-size:50%;
+   background-color:black;
+   color:white;
+   border-radius:4px;
+   padding-left:5px;
+   vertical-align:top;
+   margin-top:0px;
+   padding-top:0px;
+   position:relative;
+   top:-3px;
+   left:-22px;
+}
 #syspanel {
    float:right;
 }
@@ -96,4 +114,7 @@ background-color: #DDD;
 .pflabel {
    display:inline-block;
    width: 200px;
+}
+.dragHandle {
+	zoom:2.0;
 }

@@ -278,7 +278,8 @@ function showAdvanced(show){
       $(".advancedSetting").addClass("hidden");
 }
 function showDesignChoices(){
- callAPIAndRenderToElement("/api/getDesignAlternatives",{},"designChoices","designChoices",function(result){
+ callAPIAndRenderToElement("/api/getDesignAlternatives",{},"designChoices","designAlternatives",function(result){
+ 	toggleElement("designChoices");
 	/*$( "#designChoices" ).dialog( {
    	autoOpen:true,
    	height: 500,

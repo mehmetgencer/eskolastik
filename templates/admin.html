@@ -41,6 +41,7 @@
   <body>
   <div id='admin_templates' class='templateContainer'>
   	  <div class="estemplate" tid="designChoices">
+  	  	 <strong>{#i18n msg="Tasarım seçenekleri"/}:</strong>
   	    <ul>
   	      <li>{#i18n msg="Öntanımlı"/} <button onclick="chooseDesign('')">Choose</button></li>
 		  	{#designAlternatives}
@@ -70,7 +71,7 @@
          {#i18n msg="çerçeveli kutular içeriği değiştirilebilir alanları gösterir."/}
         </div>
 
-        <h3>{#i18n msg="Profil ayarları"/}
+        <h3 onclick="showProfileSettingsTab()">{#i18n msg="Profil ayarları"/}
             <span class="es-actionicon ui-icon ui-icon-wrench" title="pofil ayarlarını göster" onclick="showProfileSettingsTab()"></span>
         </h3>        
         <div id='profileSettings' class='hidden'>
@@ -95,9 +96,13 @@
         </span>
         </div>        
 
-        <span class='adminPartTitle'>{#i18n msg="Kullanılan tasarım"/}:</span> {?.chosenDesignName}{.chosenDesignName}{:else}{#i18n msg="Öntanımlı"/}{/.chosenDesignName}<span class="es-actionicon ui-icon ui-icon-wrench" title="change design" onclick="showDesignChoices()"></span>
-		  <button onclick="togglePreview()">{#i18n msg="Önizleme Göster/Gizle"/}</button>
-		  <div id='designChoices'>
+        <h3 onclick="showDesignChoices()">{#i18n msg="Tasarım Seçimi"/} <span class="es-actionicon ui-icon ui-icon-wrench" title="change design" onclick="showDesignChoices()"></span></h3>
+        
+		  <div id='designChoices' class='hidden'>
+			  <strong>{#i18n msg="Kullanılan tasarım"/}:</strong>{?.chosenDesignName}{.chosenDesignName}{:else}{#i18n msg="Öntanımlı"/}{/.chosenDesignName}
+			  <button onclick="togglePreview()">{#i18n msg="Önizleme Göster/Gizle"/}</button>
+			  <div id='designAlternatives'>
+			  </div>
 		  </div> 
 		  <div class='advancedSetting hidden'>       
         <h3>{#i18n msg="Tasarımlarım"/}<span class="es-actionicon ui-icon ui-icon-plusthick" title="create new design" onclick="createDesign();"></span><span class="es-actionicon ui-icon ui-icon-wrench" title="edit designs" onclick="toggleElement('designsDiv')"></span></h3>
@@ -147,7 +152,8 @@
                <ol id="publist-{.sectionKey}" class='publist ui-sortable'>
                {#publications}
                   <li id="publi-{sectionKey}-{.publicationKey}" class="estemplate publi" tid="publication"><span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>
-                     <strong>{.title}</strong>{?.issep}<span style='background-color:#BBB'>({#i18n msg="Altbölüm ayracı"/})</span>{/.issep}
+                    <span class="publi-PID dragHandle">{@count}{.}{/count} </span>
+                     <span onclick="togglePubEdit({sectionKey},{.publicationKey});"><strong>{.title}</strong>{?.issep}<span style='background-color:#BBB'>({#i18n msg="Altbölüm ayracı"/})</span>{/.issep}</span>
                      <span class="es-actionicon ui-icon ui-icon-closethick" title="delete publication" onclick="deletePub({sectionKey},{.publicationKey})"></span>
                      <span class="es-actionicon ui-icon ui-icon-wrench" title="edit publication" onclick="togglePubEdit({sectionKey},{.publicationKey})"></span>
                      <span id="psave-{sectionKey}-{.publicationKey}" class="psaveicon hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save publication" onclick="savePublication({sectionKey},{.publicationKey});"></span>
