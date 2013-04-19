@@ -1,0 +1,5 @@
+version 0.8
+
+* Added basic statistics to keep track of profive visit count
+* Added basic statistics to keep track of file download counts
+* Changed file upload so that when a new version of file with the exact same name is uploaded, it replaces the old file, leaving other fields of the PublicationFile object intact. Thus it preserves file download statistics.
