@@ -203,7 +203,7 @@ function savePublication(skey,pkey){
 		esdebug("field:"+v.id);
 		fname=v.id.split("-")[2];
 		esdebug("field:"+v.id+", field:"+fname+",html:"+v.innerHTML);
-		pubinfo[fname]=v.innerHTML;
+		pubinfo[fname]=$(v).text();//v.innerHTML;
 		});
 	pubtype=$("#peditptype-"+skey+"-"+pkey).val();
 	pubispub=$("#peditispub-"+skey+"-"+pkey).is(":checked");

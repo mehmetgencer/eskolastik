@@ -9,8 +9,10 @@ translations={
    "Profil resmi":{"en":"Profile picture"},
    "Profil açıklaması":{"en":"Profile description"},
    "İlişkili kurumlar":{"en":"Associations"},
+   "İndirilme sayısı:":{"en":"Download count:"},
    "[AssociationsHelp]":{"tr":"(Örn. 'öğretim üyesi: İstanbul Bilgi Üniversitesi, Mühendislik Fakültesi, Bilgisayar Mühendisliği Bölümü'. İyi yazılmış alanlar bulunmanızı ve meslektaşlarınızı bulmanızı kolaylaştırır)","en":"(e.g. 'faculty: Istanbul Bilgi University, Faculty of Engineering, Department ofComputer Science', well formed associations will help you connect with colleagues and get listed properly)"},
    "Kullanılan tasarım":{"en":"Currently selected design"},
+   "Son indirilenler":{"en":"Latest downloads"},
    "Tasarım Seçimi":{"en":"Design Selection"},
    "Tasarım Seçenekleri":{"en":"Design alternatives"},
    "Önizleme Göster/Gizle":{"en":"Show/Hide Preview"},
@@ -18,6 +20,7 @@ translations={
    "Tasarım ismi":{"en":"Design name"},
    "Açıklama":{"en":"Description"},
    "Şablon":{"en":"Template"},
+   "Şimdiye kadar görüntülenme sayısı:":{"en":"Profile preview count:"},
    "Stil":{"en":"Style"},
    "Öntanımlı":{"en":"Default"},
    "Bölümler":{"en":"Sections"},
@@ -49,5 +52,11 @@ translations={
    "volume":{"tr":"Cilt","en":"Volume"},
    "number":{"tr":"Sayı","en":"Number"},
    "pages":{"tr":"Sayfalar","en":"Pages"},
-   "booktitle":{"tr":"Kitap başlığı","en":"Book title"}
+   "booktitle":{"tr":"Kitap başlığı","en":"Book title"},
+   "Bölüm açıklaması":{"tr":"Bölüm açıklaması","en":"Section description"},
+   "Bu bölümde henüz yayın oluşturulmamış":{"tr":"Bu bölümde henüz yayın oluşturulmamış","en":"No publications are created in this section yet"},
+   "Henüz hiç bölüm oluşturulmamış":{"tr":"Henüz hiç bölüm oluşturulmamış","en":"No sections are created yet"},
+   "Yeni Bölüm":{"en":"New Section","tr":"Yeni Bölüm"},
+   " ikonları ile nesneleri (bölüm, yayın, dosya) sürükleyip sırasını değiştirebilirsiniz.":{"tr":" ikonları ile nesneleri (bölüm, yayın, dosya) sürükleyip sırasını değiştirebilirsiniz.","en":" with these icons you can move and change order of entities (section, publication, file, etc.)"},
+   "çerçeveli kutular içeriği değiştirilebilir alanları gösterir.":{"tr":"çerçeveli kutular içeriği değiştirilebilir alanları gösterir.","en":"framed boxes indicate editable content"}
    }

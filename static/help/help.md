@@ -26,7 +26,7 @@ Linux kullanıcıları 'wget' programı ile bu işlemi kolayca yapabilirler. Pro
 seçenekleri kullanarak profil sayfanızı ve onun içine gömülü diğer dosyaları yerel dosya sisteminize indirebilirsiniz.
 
 Örnek:
-    wget -r -p  -I /files http://e-skolastik.appspot.com/MehmetGencer/
+    wget -r -p  -I /files -I /bigfiles http://e-skolastik.appspot.com/MehmetGencer/
 
 Yayın dışındaki şeyleri nasıl listeleyebilirim?
 ------------------------------------------------

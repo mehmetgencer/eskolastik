@@ -2,6 +2,7 @@
 <html>
 	<head>
 	<meta charset="utf-8">
+	<title>e-skolastik</title>
 	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />   
@@ -31,10 +32,24 @@
          callAPIAndRenderToElement("/apipublic/getProfile?profile={{pid}}",{},"default","pageDiv",function(result){
             //adjustElements(result);   
             //makeClientData(result);      
+            tmp=window.location.hash.substring(1);
+            esdebug("Window hash:"+tmp);
+            if (tmp!="") {
+            	divi=document.getElementById("li"+tmp);
+            	divi.style.display = 'block';
+            	divi.scrollIntoView(true);
+            	esdebug("scrolled into view:"+"li"+tmp)
+            }
+            //window.location.hash="";
+            //window.location.hash=tmp;
          },true);
         });
    </script>
    <style>
+   @media print
+	{
+	.noprint {display:none;}
+	}
    .csl-entry {display:inline-block;}
    {% if hasDesign %}
      {{style|safe}}
@@ -71,9 +86,9 @@
 
      <div id='left-menu'>
 	   	<div style='min-height:150px;display:inline-block;'>
-	   	{?profilePicture.fileUrl}
-	   	<img class='profilePicture' src='{profilePicture.fileUrl}'/> 
-	   	{/profilePicture.fileUrl}
+	   	{?profilePicture.fileCleanUrl}
+	   	<img class='profilePicture' src='/{{pid}}{profilePicture.fileCleanUrl}'/> 
+	   	{/profilePicture.fileCleanUrl}
 	   	</div>
 	   	<ul class='navmenu'>
 	   	{#sections}
@@ -105,23 +120,26 @@
    	        <div>{.desc|s}</div>
    	        <ul class='publist'>
    	     {:else}
-             <li>
+             <li id='li{.publicationKey}'>
       	  	  {?.ispub}
-         	     ({#i18n msg=.pubtype/})
-         	     {#citeproc/}
+         	     <!-- ({#i18n msg=.pubtype/})
+         	     {#citeproc/} -->
+         	     <a id='anchor{.publicationKey}' name='{.publicationKey}'> </a>{.rendered|s}
       	     {:else}
          	     <em>{.title}</em>:
          	     {.desc|s}
       	     {/.ispub}
       	     {?pfiles}
-      	       <div>{#i18n msg="Dosyalar"/}:
+      	       <div><img class="noprint" src="/static/icons/download.png"/> {#i18n msg="Dosyalar"/}:
       	       {#pfiles}
       	        {?.description}
       	        <div>
-      	           <a href='{fileUrl}'>{fileName}</a> {.description|s}
+      	           <!-- <a href='{fileUrl}'>{fileName}</a> {.description|s} -->
+      	           <a href='/{{pid}}{fileCleanUrl}'>{fileName}</a> {.description|s}
       	        </div>
       	        {:else}
-      	        <a href='{fileUrl}'>{fileName}</a>&nbsp;&nbsp;
+      	        <!-- <a href='{fileUrl}'>{fileName}</a>&nbsp;&nbsp; -->
+     	           <a href='/{{pid}}{fileCleanUrl}'>{fileName}</a>&nbsp;&nbsp; 
       	        {/.description}
       	       {/pfiles}
       	       </div>
@@ -141,7 +159,7 @@
   </div>
   <div style='display:none'>
   {% for f in allFiles %}
-  <a href='{{f.asJson.fileUrl}}'></a>
+  <a href='/{{pid}}{{f.asJson.fileCleanUrl}}'></a>
   {% endfor %}
   </div>
   <a class='linkpersistent' href='http://e-skolastik.appspot.com'>powered by <img class='logopersistent' src="/static/icons/logo.jpg"/></a>
@@ -151,5 +169,19 @@
       <h2 style="color:gray;font-weight:normal;">Lütfen bekleyin....</h2>
      </div>
 </div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40225294-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
  </body>
 </html>

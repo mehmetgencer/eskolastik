@@ -1,5 +1,6 @@
 devserver:
-	~/google_appengine/dev_appserver.py --use_sqlite --debug --address=0.0.0.0 .
+	~/google_appengine/dev_appserver.py  .
+	#~/google_appengine/dev_appserver.py --use_sqlite --debug --address=0.0.0.0 .
 devserverclear:
 	~/google_appengine/dev_appserver.py --use_sqlite --debug --clear_datastore .
 deploy:

@@ -70,7 +70,14 @@
          <br/><span style='border:1px solid black;display:inline-block;min-width:50px;'>xxxxxxx</span>
          {#i18n msg="çerçeveli kutular içeriği değiştirilebilir alanları gösterir."/}
         </div>
-
+        <div><img src='/static/icons/stats.png'/> {#i18n msg="Şimdiye kadar görüntülenme sayısı:"/} {.viewCount}
+        	<br/>{#i18n msg="Son indirilenler"/}:
+        	<ul>
+        	{#fileStats}
+        		<li>{.name}:{.tstamp}</li>
+        	{/fileStats}
+        	</ul>
+        </div>
         <h3 onclick="showProfileSettingsTab()">{#i18n msg="Profil ayarları"/}
             <span class="es-actionicon ui-icon ui-icon-wrench" title="pofil ayarlarını göster" onclick="showProfileSettingsTab()"></span>
         </h3>        
@@ -134,7 +141,11 @@
 			{/designs}
 			</div>
         </div>
-        <h3>{#i18n msg="Bölümler"/}: <span class="es-actionicon ui-icon ui-icon-plusthick" title="add section" onclick="createSection();"></span>
+        <h3>{#i18n msg="Bölümler"/}: 
+        		<button onclick="createSection();">
+             {#i18n msg="Yeni Bölüm"/}
+        		<span class="es-actionicon ui-icon ui-icon-plusthick" title="add section" onclick="createSection();"></span>
+        		</button>
          </h3>        
          {?sections}
            <ol id="seclist" class='seclist ui-sortable'>
@@ -143,11 +154,11 @@
             <span id="stitle-{.sectionKey}" class="es-editable sectionname" contentEditable="true" onInput="sectionNeedsSave({.sectionKey});" onkeypress="return preventEnter(event);">{.title}</span>
             <span class="es-actionicon ui-icon ui-icon-closethick" title="delete section" onclick="deleteSec({sectionKey});"></span> 
             <span id="ssave-{.sectionKey}" class="hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save section" onclick="saveSection({.sectionKey});"></span>
-            <br/>Section description:<div id="secdesc-{.sectionKey}" contentEditable="true" class="es-editable es-editable-aloha secdesc" onInput="sectionNeedsSave({.sectionKey});">{.secdesc|s}</div>
+            <br/>{#i18n msg="Bölüm açıklaması"/}:<div id="secdesc-{.sectionKey}" contentEditable="true" class="es-editable es-editable-aloha secdesc" onInput="sectionNeedsSave({.sectionKey});">{.secdesc|s}</div>
             <br/>{#i18n msg="Yayınlar"/}:
-            &nbsp;A<span class="es-actionicon ui-icon ui-icon-plusthick" title="add academic publication" onclick="createPublicationInSection({.sectionKey},'academic');">A</span>
-            &nbsp;&nbsp;N<span class="es-actionicon ui-icon ui-icon-plusthick" title="add non-academic publication" onclick="createPublicationInSection({.sectionKey},'non-academic');">N</span>
-            &nbsp;&nbsp;S<span class="es-actionicon ui-icon ui-icon-plusthick" title="add subsection separator" onclick="createPublicationInSection({.sectionKey},'sep');">S</span>
+            &nbsp;<button>A<span class="es-actionicon ui-icon ui-icon-plusthick" title="add academic publication" onclick="createPublicationInSection({.sectionKey},'academic');">A</span></button>
+            &nbsp;&nbsp;<button>N<span class="es-actionicon ui-icon ui-icon-plusthick" title="add non-academic publication" onclick="createPublicationInSection({.sectionKey},'non-academic');">N</span></button>
+            &nbsp;&nbsp;<button>S<span class="es-actionicon ui-icon ui-icon-plusthick" title="add subsection separator" onclick="createPublicationInSection({.sectionKey},'sep');">S</span></button>
             {?publications}
                <ol id="publist-{.sectionKey}" class='publist ui-sortable'>
                {#publications}
@@ -158,6 +169,7 @@
                      <span class="es-actionicon ui-icon ui-icon-wrench" title="edit publication" onclick="togglePubEdit({sectionKey},{.publicationKey})"></span>
                      <span id="psave-{sectionKey}-{.publicationKey}" class="psaveicon hidden es-actionicon es-actionicon-warning ui-icon ui-icon-disk" title="save publication" onclick="savePublication({sectionKey},{.publicationKey});"></span>
                      <div id="pedit-{sectionKey}-{.publicationKey}" class="hidden">
+                      <a href='/{code}#{.publicationKey}'>link</a>
                       <table>
                        <tr  style="vertical-align:top;">
                         <td>
@@ -200,9 +212,10 @@
                             <li id="pubfile-{sectionKey}-{publicationKey}_____{.fileKey}"> <span class='dragHandle es-actionicon ui-icon ui-icon-arrow-4'></span>  
                                  <span class="es-actionicon ui-icon ui-icon-closethick" title="delete file" 
                                    onclick="return deletePubFile({sectionKey},{publicationKey},'{.fileKey}');"></span>
-                                 <a href="{.fileUrl}" target='_new'>
-                                 {.fileName}
-                                </a>
+                                 <!-- <a href="{.fileUrl}" target='_new'>
+                                 {.fileName} -->
+                                 <a href='/{usernick}{fileCleanUrl}' target='_new'>{fileName}</a> {.description|s}
+                                </a> <img class='file-stat' src='/static/icons/stats.png'/> ({#i18n msg="İndirilme sayısı:"/}{.downloadCount})
                                  <span title="Açıklama" id="pfdesc-{sectionKey}-{.publicationKey}}_____{.fileKey}" class="es-editable pfdesc" contentEditable="true" onInput="publicationNeedsSave({sectionKey},{publicationKey});">{.description|s}</span>
                             </li>
                            {/pfiles}
@@ -216,13 +229,13 @@
                {/publications}
                </ol>
             {:else}
-             <br/>No publications in this section
+             <br/>{#i18n msg="Bu bölümde henüz yayın oluşturulmamış"/}
             {/publications}
            </li>
            {/sections}
            </ol>
         {:else}
-         No sections are defined yet
+         {#i18n msg="Henüz hiç bölüm oluşturulmamış"/}
         {/sections}
         <!-- <div class='advancedSetting hidden'>
          <h3>{#i18n msg="Tercümeler"/}</h3>
